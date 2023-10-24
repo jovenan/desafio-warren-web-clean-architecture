@@ -26,7 +26,7 @@ export class TransactionUseCase {
             }
             else {
                 result.sort((a, b) => {
-                    return a.title.localeCompare(b.title);
+                    return (a.title).localeCompare(b.title);
                 });
             }
             return result;

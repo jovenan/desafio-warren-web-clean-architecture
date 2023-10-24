@@ -1,26 +1,31 @@
 import { describe, it } from "@jest/globals";
 import { HttpUseCase } from "./HttpUseCase";
-import { IHttpRepository } from "../repository";
+import { HttpResponse } from "./mocks";
+
+jest.mock("./HttpUseCase");
 
 describe("HttpUseCase", () => {
-    let httpUseCase: IHttpRepository;
+    let httpUseCaseMocked: jest.MockedObjectDeep<HttpUseCase>;
 
     beforeEach(() => {
-        httpUseCase = new HttpUseCase();
+        httpUseCaseMocked = jest.mocked(new HttpUseCase());
+        httpUseCaseMocked.fetchData.mockImplementationOnce(() => Promise.resolve(HttpResponse));
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
     });
 
     it("should have fetchData method", async () => {
-        expect(httpUseCase.fetchData({url: "/transactions"})).toBeTruthy();
+        expect(httpUseCaseMocked.fetchData({url: "/transactions"})).toBeTruthy();
     });
 
     it("should return correct response struct on fetchData", async () => {
-        const result = await httpUseCase.fetchData({url: "/transactions"});
+        const result = await httpUseCaseMocked.fetchData({url: "/transactions"});
 
-        expect(result).toHaveProperty("status");
-        expect(result).toHaveProperty("headers");
-        expect(result).toHaveProperty("data");
-        expect(result.status).toBe(200);
-        expect(result.headers).toBeTruthy();
-        expect(result.data).toBeTruthy();
+        expect(result).toBeTruthy();
+        expect(result).toEqual(HttpResponse);
+        expect(httpUseCaseMocked.fetchData).toBeCalledWith({url: "/transactions"});
+        expect(httpUseCaseMocked.fetchData).toHaveBeenCalledTimes(1);
     });
 });

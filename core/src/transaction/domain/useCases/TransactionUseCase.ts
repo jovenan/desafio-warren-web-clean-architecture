@@ -22,7 +22,7 @@ export class TransactionUseCase implements ITransactionRepository {
             });
         } else {
             result.sort((a, b) => {
-                return a.title.localeCompare(b.title);
+                return (a.title).localeCompare(b.title);
             });
         }
 
