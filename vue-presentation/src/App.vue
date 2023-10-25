@@ -3,7 +3,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 import { TransactionView } from "!@/build";
 const transactionView = new TransactionView();
-console.log(await transactionView.filterTransactions({type: 'title'}))
+console.log(await transactionView.filterTransactions({type: 'processed'}))
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import { ITransaction } from "../entity";
 
 export type FilterTransactionsParams = {
-    type: "status" | "title";
+    type: "created" | "processing" | "processed";
 }
 
 export type GetTransactionParams = {
@@ -11,5 +11,5 @@ export type GetTransactionParams = {
 export interface ITransactionRepository {
     listTransaction(): Promise<ITransaction[]>;
     filterTransactions(params: FilterTransactionsParams): Promise<ITransaction[]>;
-    getTransaction(params: GetTransactionParams): Promise<ITransaction>;
+    getTransaction(params: GetTransactionParams): Promise<ITransaction | null>;
 }

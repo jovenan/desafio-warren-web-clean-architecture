@@ -26,27 +26,27 @@ describe("TransactionUseCase", () => {
         expect(transactionUseCaseMocked.listTransaction).toHaveBeenCalledTimes(1);
     });
 
-    it("should return a list of transactions filtered by status", async () => {
+    it("should return a list of transactions filtered by status created", async () => {
         transactionUseCaseMocked.filterTransactions.mockResolvedValueOnce(mockedFilteredByStatusTransactions);
 
-        const result = await transactionUseCaseMocked.filterTransactions({type: "status"});
+        const result = await transactionUseCaseMocked.filterTransactions({type: "created"});
 
         expect(result).toBeTruthy();
         expect(Array.isArray(result)).toBe(true);
         expect(result).toEqual(mockedFilteredByStatusTransactions);
-        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({type: "status"});
+        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({type: "created"});
         expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledTimes(1);
     });
 
-    it("should return a list of transactions filtered by title", async () => {
+    it("should return a list of transactions filtered by status processing", async () => {
         transactionUseCaseMocked.filterTransactions.mockResolvedValueOnce(mockedTransactions);
 
-        const result = await transactionUseCaseMocked.filterTransactions({type: "title"});
+        const result = await transactionUseCaseMocked.filterTransactions({type: "processing"});
 
         expect(result).toBeTruthy();
         expect(Array.isArray(result)).toBe(true);
         expect(result).toEqual(mockedTransactions);
-        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({type: "title"});
+        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({type: "processing"});
         expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledTimes(1);
 
     });

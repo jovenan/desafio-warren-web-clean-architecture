@@ -10,42 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { TransactionRepository } from "../../database";
 export class TransactionUseCase {
     constructor() {
-        this.transactionRepository = new TransactionRepository();
-    }
-    filterTransactions({ type }) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield new Promise((resolve) => {
-                this.transactionRepository.getTransactions({ url: "/transactions" })
-                    .then((response => resolve(response.data)));
-            });
-            if (type == "status") {
-                result.sort((a, b) => {
-                    const statusOrder = { "created": 1, "processing": 2, "processed": 3 };
-                    return statusOrder[a.status] - statusOrder[b.status];
-                });
-            }
-            else {
-                result.sort((a, b) => {
-                    return (a.title).localeCompare(b.title);
-                });
-            }
-            return result;
+        const transactionRepository = new TransactionRepository();
+        this.transactions = new Promise((resolve) => {
+            transactionRepository.getTransactions({ url: "/transactions" })
+                .then((response => resolve(response.data)));
         });
     }
     listTransaction() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise((resolve) => {
-                this.transactionRepository.getTransactions({ url: "/transactions" })
-                    .then((response => resolve(response.data)));
-            });
+            return this.transactions;
+        });
+    }
+    filterTransactions({ type }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const transactions = yield this.transactions;
+            return transactions.filter((transaction) => transaction.status == type) || [];
         });
     }
     getTransaction({ id }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield new Promise((resolve) => {
-                this.transactionRepository.getTransactions({ url: "/transactions/" + id })
-                    .then((response => resolve(response.data)));
-            });
+            const transactions = yield this.transactions;
+            return transactions.find((transaction) => transaction.id == id) || null;
         });
     }
 }

@@ -27,22 +27,22 @@ describe("TransactionUseCase", () => {
         expect(result).toEqual(mockedTransactions);
         expect(transactionUseCaseMocked.listTransaction).toHaveBeenCalledTimes(1);
     }));
-    it("should return a list of transactions filtered by status", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should return a list of transactions filtered by status created", () => __awaiter(void 0, void 0, void 0, function* () {
         transactionUseCaseMocked.filterTransactions.mockResolvedValueOnce(mockedFilteredByStatusTransactions);
-        const result = yield transactionUseCaseMocked.filterTransactions({ type: "status" });
+        const result = yield transactionUseCaseMocked.filterTransactions({ type: "created" });
         expect(result).toBeTruthy();
         expect(Array.isArray(result)).toBe(true);
         expect(result).toEqual(mockedFilteredByStatusTransactions);
-        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({ type: "status" });
+        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({ type: "created" });
         expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledTimes(1);
     }));
-    it("should return a list of transactions filtered by title", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("should return a list of transactions filtered by status processing", () => __awaiter(void 0, void 0, void 0, function* () {
         transactionUseCaseMocked.filterTransactions.mockResolvedValueOnce(mockedTransactions);
-        const result = yield transactionUseCaseMocked.filterTransactions({ type: "title" });
+        const result = yield transactionUseCaseMocked.filterTransactions({ type: "processing" });
         expect(result).toBeTruthy();
         expect(Array.isArray(result)).toBe(true);
         expect(result).toEqual(mockedTransactions);
-        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({ type: "title" });
+        expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledWith({ type: "processing" });
         expect(transactionUseCaseMocked.filterTransactions).toHaveBeenCalledTimes(1);
     }));
     it("should return a transaction when getTransaction is called", () => __awaiter(void 0, void 0, void 0, function* () {
