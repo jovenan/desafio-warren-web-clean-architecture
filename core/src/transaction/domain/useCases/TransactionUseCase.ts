@@ -1,6 +1,6 @@
 import { TransactionRepository } from "../../database";
 import { ITransaction } from "../entity";
-import { ITransactionRepository, FilterTransactionsParams, GetTransactionParams } from "../repository";
+import { ITransactionRepository, FilterTransactionsParams, GetTransactionParams, SearchTransactionsParams } from "../repository";
 
 export class TransactionUseCase implements ITransactionRepository {
     private transactions: Promise<ITransaction[]>;
@@ -9,7 +9,15 @@ export class TransactionUseCase implements ITransactionRepository {
         const transactionRepository = new TransactionRepository();
         this.transactions = new Promise((resolve) => {
             transactionRepository.getTransactions({url: "/transactions"})
-                .then((response => resolve(response.data)));
+                .then((response => {
+                    const result = response.data;
+                    const sortedResultByDate: ITransaction[] = result.sort((a: ITransaction, b: ITransaction) => {
+                        const dateA: Date= new Date(a.date);
+                        const dateB: Date = new Date(b.date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+                    resolve(sortedResultByDate);
+                }));
         });
     }
 
@@ -27,5 +35,11 @@ export class TransactionUseCase implements ITransactionRepository {
         const transactions = await this.transactions;
 
         return transactions.find((transaction) => transaction.id == id) || null;
+    }
+
+    async searchTransactions({ word }: SearchTransactionsParams): Promise<ITransaction[] | []> {
+        const transactions = await this.transactions;
+
+        return transactions.filter(transaction => transaction.title.toLowerCase().startsWith(word.toLowerCase())) || [];
     }
 }

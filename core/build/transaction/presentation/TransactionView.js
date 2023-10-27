@@ -27,5 +27,10 @@ export class TransactionView {
             return yield this.transaction.getTransaction(params);
         });
     }
+    searchTransactions(params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.transaction.searchTransactions(params);
+        });
+    }
 }
 //# sourceMappingURL=TransactionView.js.map

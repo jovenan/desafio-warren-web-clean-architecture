@@ -1,5 +1,5 @@
 import { TransactionUseCase } from "../domain/useCases";
-import { FilterTransactionsParams, GetTransactionParams, ITransactionRepository } from "../domain";
+import { FilterTransactionsParams, GetTransactionParams, ITransactionRepository, SearchTransactionsParams } from "../domain";
 
 export class TransactionView {
     private transaction: ITransactionRepository;
@@ -18,5 +18,9 @@ export class TransactionView {
 
     async getTransaction(params: GetTransactionParams) {
         return await this.transaction.getTransaction(params);
+    }
+
+    async searchTransactions(params: SearchTransactionsParams) {
+        return await this.transaction.searchTransactions(params);
     }
 }

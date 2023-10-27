@@ -62,4 +62,15 @@ describe("TransactionUseCase", () => {
         expect(transactionUseCaseMocked.getTransaction).toHaveBeenCalledWith({id: "5f89f9f271e4213092bd4e41"});
         expect(transactionUseCaseMocked.getTransaction).toHaveBeenCalledTimes(1);
     });
+
+    it("should return a transaction when searchTransactions is called", async () => {
+        transactionUseCaseMocked.searchTransactions.mockResolvedValueOnce(mockedTransactions);
+
+        const result = await transactionUseCaseMocked.searchTransactions({word: "Dep"});
+
+        expect(result).toBeTruthy();
+        expect(result).toEqual(mockedTransactions);
+        expect(transactionUseCaseMocked.searchTransactions).toHaveBeenCalledWith({word: "Dep"});
+        expect(transactionUseCaseMocked.searchTransactions).toHaveBeenCalledTimes(1);
+    });
 });

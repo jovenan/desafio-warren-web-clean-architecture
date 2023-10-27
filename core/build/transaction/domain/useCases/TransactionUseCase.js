@@ -13,7 +13,15 @@ export class TransactionUseCase {
         const transactionRepository = new TransactionRepository();
         this.transactions = new Promise((resolve) => {
             transactionRepository.getTransactions({ url: "/transactions" })
-                .then((response => resolve(response.data)));
+                .then((response => {
+                const result = response.data;
+                const sortedResultByDate = result.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateB.getTime() - dateA.getTime();
+                });
+                resolve(sortedResultByDate);
+            }));
         });
     }
     listTransaction() {
@@ -31,6 +39,12 @@ export class TransactionUseCase {
         return __awaiter(this, void 0, void 0, function* () {
             const transactions = yield this.transactions;
             return transactions.find((transaction) => transaction.id == id) || null;
+        });
+    }
+    searchTransactions({ word }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const transactions = yield this.transactions;
+            return transactions.filter(transaction => transaction.title.toLowerCase().startsWith(word.toLowerCase())) || [];
         });
     }
 }
